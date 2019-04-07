@@ -1,0 +1,3 @@
+server="localhost"
+database="majalah_db"
+port=":80"
