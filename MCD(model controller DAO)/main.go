@@ -5,18 +5,18 @@ import (
 	. "github.com/belajar/dao"
 )
 
-var dao = MajalahDAO{}
+var core = Core{}
 var inputconfig = InputConfig{}
 var network = Network{}
 
 func init() {
 	inputconfig.Read()
-	dao.Database = inputconfig.Database
-	dao.Server = inputconfig.Server
+	core.Database = inputconfig.Database
+	core.Server = inputconfig.Server
 	network.Port = inputconfig.Port
 }
 
 func main() {
-	dao.Koneksi()
+	core.Koneksi()
 	network.Route()
 }

@@ -5,16 +5,13 @@ import (
 	"net/http"
 
 	"github.com/belajar/dao"
-	. "github.com/belajar/dao"
 	. "github.com/belajar/models"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 )
 
-var majalahdao = MajalahDAO{}
-
 func AllMajalah(response http.ResponseWriter, request *http.Request) {
-	majalah, err := majalahdao.FindMajalah()
+	majalah, err := dao.FindMajalah()
 	if err != nil {
 		dao.RespondWithError(response, http.StatusInternalServerError, err.Error())
 	}
@@ -23,7 +20,7 @@ func AllMajalah(response http.ResponseWriter, request *http.Request) {
 
 func FindMajalahbyId(response http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
-	majalah, err := majalahdao.FindMajalahById(params["id"])
+	majalah, err := dao.FindMajalahById(params["id"])
 	if err != nil {
 		dao.RespondWithError(response, http.StatusInternalServerError, "error function Majalhbyid")
 	}
@@ -38,7 +35,7 @@ func CreateMajalah(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 	majalah.ID = bson.NewObjectId()
-	if err := majalahdao.CreateMajalahDAO(majalah); err != nil {
+	if err := dao.CreateMajalahDAO(majalah); err != nil {
 		dao.RespondWithError(response, http.StatusInternalServerError, "error insert data")
 	}
 	dao.RespondWithJson(response, http.StatusCreated, majalah)
@@ -46,7 +43,7 @@ func CreateMajalah(response http.ResponseWriter, request *http.Request) {
 
 func DeleteMajalah(response http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
-	err := majalahdao.DeleteMajalahDAO(params["id"])
+	err := dao.DeleteMajalahDAO(params["id"])
 	if err != nil {
 		dao.RespondWithError(response, http.StatusInternalServerError, "error delete majalah")
 	}
@@ -60,7 +57,7 @@ func UpdateMajalh(response http.ResponseWriter, request *http.Request) {
 	if err := json.NewDecoder(request.Body).Decode(&majalah); err != nil {
 		dao.RespondWithError(response, http.StatusInternalServerError, "error decode json")
 	}
-	err := majalahdao.UpdateMajalahDAO(params["id"], majalah)
+	err := dao.UpdateMajalahDAO(params["id"], majalah)
 	if err != nil {
 		dao.RespondWithError(response, http.StatusInternalServerError, "error update majalah")
 	}
